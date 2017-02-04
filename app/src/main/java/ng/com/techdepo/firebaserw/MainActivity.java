@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
 
-import android.support.v4.content.ContextCompat;
+
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,29 +18,38 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 
 
-public  class MainActivity extends AppCompatActivity {
+public  class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     // Firebase instance variables
+    private FirebaseUser mFirebaseUser;
+    private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mFirebaseDatabaseReference;
     private RecyclerView staffRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private FirebaseRecyclerAdapter<Staff_Model, MessageViewHolder>mFirebaseAdapter;
     public static final String MESSAGES_CHILD = "staff";
     private static final String TAG = "MainActivity";
+    private TextView textViewUserEmail;
+    private Button buttonLogout;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,6 +61,28 @@ public  class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        //if the user is not logged in
+        //that means current user will return null
+        if(mFirebaseAuth.getCurrentUser() == null){
+
+            //starting login activity
+            startActivity(new Intent(this, SignInActivity.class));
+            //closing this activity
+            finish();
+            return;
+        }else {
+
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            textViewUserEmail = (TextView) findViewById(R.id.userEmailText);
+            buttonLogout = (Button) findViewById(R.id.logOutButton);
+
+            //displaying logged in user name
+            textViewUserEmail.setText(mFirebaseUser.getEmail());
+        }
+        //adding listener to button
+        buttonLogout.setOnClickListener(this);
 
         staffRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -95,7 +126,18 @@ public  class MainActivity extends AppCompatActivity {
 
         }
 
-
+    @Override
+    public void onClick(View view) {
+        //if logout is pressed
+        if(view == buttonLogout){
+            //logging out the user
+            mFirebaseAuth.signOut();
+            //closing activity
+            finish();
+            //starting login activity
+            startActivity(new Intent(this, SignInActivity.class));
+        }
+    }
 
 
 
