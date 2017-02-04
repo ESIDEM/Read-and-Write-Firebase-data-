@@ -24,8 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.attr.country;
-import static android.R.attr.name;
+
 
 public class AddStaff extends AppCompatActivity {
 
