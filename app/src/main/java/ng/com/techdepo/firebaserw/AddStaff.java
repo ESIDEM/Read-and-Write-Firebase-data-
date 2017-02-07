@@ -30,7 +30,7 @@ import java.util.Map;
 
 
 
-public class AddStaff extends AppCompatActivity {
+public class AddStaff extends AppCompatActivity implements View.OnClickListener{
 
     // Firebase instance variables
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -44,6 +44,7 @@ public class AddStaff extends AppCompatActivity {
     private EditText mStaffAge;
     private EditText mStaffLevel;
     private Button mAddStaff;
+    private Button mFetchNewConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class AddStaff extends AppCompatActivity {
 // available. Eg: if an error occurred fetching values from the server.
         Map<String, Object> defaultConfigMap = new HashMap<>();
         defaultConfigMap.put("staff_name_limit", 10L);
-
+        mFetchNewConfig = (Button) findViewById(R.id.fetch_new_config);
+        mFetchNewConfig.setOnClickListener(this);
 // Apply config settings and default values.
         mFirebaseRemoteConfig.setConfigSettings(firebaseRemoteConfigSettings);
         mFirebaseRemoteConfig.setDefaults(defaultConfigMap);
@@ -211,6 +213,14 @@ public class AddStaff extends AppCompatActivity {
         mStaffName.setFilters(new InputFilter[]{new
                 InputFilter.LengthFilter(staff_name_limit.intValue())});
         Log.d(TAG, "SNL is: " + staff_name_limit);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == mFetchNewConfig)
+        {fetchConfig();
+        }
+        // Do something
     }
 
 
