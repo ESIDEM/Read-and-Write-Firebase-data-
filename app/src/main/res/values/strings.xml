@@ -2,4 +2,8 @@
     <string name="app_name">FireBase R/W</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_staff">AddStaff</string>
+    <string name="invite_menu_label">Invite</string>
+    <string name="invitation_message">Hello, please download this App and test</string>
+    <string name="invitation_cta">Call to action</string>
+    <string name="invitation_title">Staff App Invite</string>
 </resources>

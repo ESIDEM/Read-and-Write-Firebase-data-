@@ -7,4 +7,7 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/invite_menu"
+        android:title="@string/invite_menu_label"/>
 </menu>
